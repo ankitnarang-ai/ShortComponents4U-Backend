@@ -41,7 +41,7 @@ app.use("/user", userRouter);
 
 /** Global Error handling */
 app.use( "/", ( error: ErrorRequestHandler, req: Request, res: Response, next: NextFunction ) => {
-    if (error) {
+    if (error instanceof Error) {
       res.status(500).json({ message: "Something went wrong" });
     }
   }
