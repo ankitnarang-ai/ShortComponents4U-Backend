@@ -16,20 +16,25 @@ dotenv.config();
 
 export const app = express();
 
-const allowedOrigins = ['http://localhost:4200', 'https://www.shortcomponents4u.com'];
+// const allowedOrigins = ['http://localhost:4200', 'https://www.shortcomponents4u.com'];
 
-const corsOptions: cors.CorsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, 
-};
+// const corsOptions: cors.CorsOptions = {
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true, 
+// };
 
-app.use(cors(corsOptions)); 
+// app.use(cors(corsOptions)); 
+
+app.use(cors({
+  origin: true,           // Reflects the request origin
+  credentials: true       // Important: allows cookies to be sent
+}));
 
 app.use(express.json());
 app.use(cookieParser());
