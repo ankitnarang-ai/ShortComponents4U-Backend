@@ -50,8 +50,12 @@ authRouter.post("/public/login", async (req: Request, res: Response) => {
 
     const token = jwt.sign({ id: user._id}, 'secret');
 
-    // Generate JWT token
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,        // 🔒 Required when frontend != backend domain
+      sameSite: 'none',    // 🔄 Required for cross-origin
+    });
+
 
     res.send({
       message: "Login successful",

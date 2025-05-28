@@ -16,12 +16,20 @@ dotenv.config();
 
 export const app = express();
 
-// Configure CORS
-const corsOptions = {
-  origin: 'http://localhost:4200',
-  credentials: true
+const allowedOrigins = ['http://localhost:4200', 'https://www.shortcomponents4u.com'];
+
+const corsOptions: cors.CorsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, 
 };
-app.use(cors(corsOptions));
+
+app.use(cors(corsOptions)); 
 
 app.use(express.json());
 app.use(cookieParser());
