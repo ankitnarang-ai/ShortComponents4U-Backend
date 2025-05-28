@@ -1,0 +1,40 @@
+import express, {
+  Request,
+  Response,
+  NextFunction,
+  ErrorRequestHandler,
+} from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import { authRouter } from "./routes/auth";
+import { userRouter } from "./routes/user";
+import cors from 'cors';
+import morgan from 'morgan';
+
+
+dotenv.config();
+
+export const app = express();
+
+// Configure CORS
+const corsOptions = {
+  origin: 'http://localhost:4200',
+  credentials: true
+};
+app.use(cors(corsOptions));
+
+app.use(express.json());
+app.use(cookieParser());
+
+app.use(morgan('dev'));
+
+app.use("/authentication", authRouter);
+app.use("/user", userRouter);
+
+/** Global Error handling */
+app.use( "/", ( error: ErrorRequestHandler, req: Request, res: Response, next: NextFunction ) => {
+    if (error) {
+      res.status(500).json({ message: "Something went wrong" });
+    }
+  }
+);
